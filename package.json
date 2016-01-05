@@ -4,14 +4,15 @@
   "description": "This is the push server of xeem project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "keywords": [
     "xeem",
     "push",
     "ios"
   ],
-  "start": "node index.js",
+
   "author": "Tu Hoang",
   "license": "MIT",
   "dependencies": {
