@@ -21,6 +21,8 @@ app.get('/requestSent', function(req, res) {
 
         user.sendRequestSentNotification(requestId);
     }
+
+
 });
 
 app.post('/requestSent', function(req, res) {
@@ -39,6 +41,8 @@ app.post('/requestSent', function(req, res) {
 
         user.sendRequestSentNotification(requestId);
     }
+
+    res.json(data);
 });
 
 function User(socket) {
