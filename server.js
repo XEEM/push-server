@@ -1,5 +1,10 @@
-var app = require('express')();
+var express = require('express');
+var app = express();
 var server = require('http').Server(app);
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+
 app.get('/', function(req, res) {
     res.sendfile(__dirname + '/index.html');
 });
@@ -10,6 +15,24 @@ app.get('/requestSent', function(req, res) {
     console.log("Request Sent API")
     console.log("User ID:" + userId)
     console.log("Request ID:" + requestId)
+    var user = service.findUserWithShop(userId);
+    if (user != null) {
+        console.log("Found User: " + user.userId);
+
+        user.sendRequestSentNotification(requestId);
+    }
+});
+
+app.post('/requestSent', function(req, res) {
+    var userId = req.param('userId');
+    var requestId = req.param('requestId');
+    var data = req.body;
+
+    console.log("Request Sent API");
+    console.log("Body: " + data);
+    console.log("User ID:" + userId);
+    console.log("Request ID:" + requestId);
+
     var user = service.findUserWithShop(userId);
     if (user != null) {
         console.log("Found User: " + user.userId);
