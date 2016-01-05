@@ -11,6 +11,7 @@
     "push",
     "ios"
   ],
+  "start": "node index.js",
   "author": "Tu Hoang",
   "license": "MIT",
   "dependencies": {
