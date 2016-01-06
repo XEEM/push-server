@@ -94,7 +94,7 @@ XeemService.prototype.addUser = function(newUser){
     }
   }
 
-  this.users.push(newUser);
+  this.users.push(newUser); 
 }
 XeemService.prototype.addHandlers = function() {
     var service = this
