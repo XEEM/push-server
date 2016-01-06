@@ -69,7 +69,9 @@ User.prototype.addHandlers = function() {
 User.prototype.sendRequestSentNotification = function(requestId, request) {
     var self = this;
     this.socket.emit('requestSent', requestId);
+    console.log("sent requestSend");
     this.socket.emit('requestSent2', request);
+    console.log("sent requestSend2");
 }
 
 function XeemService() {
