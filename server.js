@@ -19,7 +19,7 @@ app.get('/requestSent', function(req, res) {
     if (user != null) {
         console.log("Found User: " + user.userId);
 
-        user.sendRequestSentNotification(requestId);
+        //user.sendRequestSentNotification(requestId);
     }
 
 
