@@ -46,7 +46,7 @@ app.post('/cancel', function(req, res) {
         user.sendCancelNotification(requestId);
     }
 
-    res.json(data);
+    res.json({requestId: requestId, userId: userId});
 });
 
 function User(socket, userId) {
