@@ -15,6 +15,7 @@ app.get('/requestSent', function(req, res) {
     console.log("Request Sent API")
     console.log("User ID:" + userId)
     console.log("Request ID:" + requestId)
+
     var user = service.findUserWithShop(userId);
     if (user != null) {
         console.log("Found User: " + user.userId);
@@ -34,6 +35,7 @@ app.post('/requestSent', function(req, res) {
     console.log("Body: %j", data);
     console.log("User ID:" + userId);
     console.log("Request ID:" + requestId);
+    console.log("Users: %j", service.users.length);
 
     var user = service.findUserWithShop(userId);
     if (user != null) {
@@ -45,10 +47,10 @@ app.post('/requestSent', function(req, res) {
     res.json(data);
 });
 
-function User(socket) {
+function User(socket, userId) {
     var self = this
     this.socket = socket
-    this.userId = ""
+    this.userId = userId
     this.addHandlers();
 }
 User.prototype.addHandlers = function() {
@@ -80,18 +82,34 @@ function XeemService() {
     this.users = []
     this.addHandlers()
 }
+
+XeemService.prototype.addUser = function(newUser){
+  console.log("adding new user");
+  console.log(this.users.length);
+  for(var i = 0; i < this.users.length; i++){
+    console.log(this.users[i].userId);
+    if(this.users[i].userId == newUser.userId) {
+      this.users[i] = newUser;
+      return;
+    }
+  }
+
+  this.users.push(newUser);
+}
 XeemService.prototype.addHandlers = function() {
     var service = this
     console.log("adding handlers")
     this.io.on("connection", function(socket) {
-        var newUser = new User(socket);
-        service.users.push(newUser);
+        
         console.log("user connected")
         socket.on('sendUserId', function(data) {
             console.log("send user id event");
             console.log(data);
-            newUser.userId = data;
-        })
+            
+            var newUser = new User(socket, data);
+            service.addUser(newUser);
+        });
+        console.log("Users: %j", service.users.length);
     })
 }
 XeemService.prototype.findUserWithShop = function(userId) {
