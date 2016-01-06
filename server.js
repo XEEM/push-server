@@ -31,7 +31,7 @@ app.post('/requestSent', function(req, res) {
     var data = req.body;
 
     console.log("Request Sent API");
-    console.log("Body: " + data);
+    console.log("Body: %j", data);
     console.log("User ID:" + userId);
     console.log("Request ID:" + requestId);
 
