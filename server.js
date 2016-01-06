@@ -39,7 +39,7 @@ app.post('/requestSent', function(req, res) {
     if (user != null) {
         console.log("Found User: " + user.userId);
 
-        user.sendRequestSentNotification(requestId);
+        user.sendRequestSentNotification(requestId, data);
     }
 
     res.json(data);
@@ -66,9 +66,10 @@ User.prototype.addHandlers = function() {
         console.log(data)
     })
 }
-User.prototype.sendRequestSentNotification = function(requestId) {
+User.prototype.sendRequestSentNotification = function(requestId, request) {
     var self = this;
     this.socket.emit('requestSent', requestId);
+    this.socket.emit('requestSent2', request);
 }
 
 function XeemService() {
