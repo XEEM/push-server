@@ -8,23 +8,6 @@ app.use(bodyParser.json());
 app.get('/', function(req, res) {
     res.sendfile(__dirname + '/index.html');
 });
-app.get('/requestSent', function(req, res) {
-    var userId = req.param('userId');
-    var requestId = req.param('requestId');
-
-    console.log("Request Sent API")
-    console.log("User ID:" + userId)
-    console.log("Request ID:" + requestId)
-
-    var user = service.findUserWithShop(userId);
-    if (user != null) {
-        console.log("Found User: " + user.userId);
-
-        //user.sendRequestSentNotification(requestId);
-    }
-
-
-});
 
 app.post('/requestSent', function(req, res) {
     var userId = req.param('userId');
@@ -35,13 +18,32 @@ app.post('/requestSent', function(req, res) {
     console.log("Body: %j", data);
     console.log("User ID:" + userId);
     console.log("Request ID:" + requestId);
-    console.log("Users: %j", service.users.length);
+    console.log("Count Users: %j", service.users.length);
 
     var user = service.findUserWithShop(userId);
     if (user != null) {
         console.log("Found User: " + user.userId);
 
         user.sendRequestSentNotification(requestId, data);
+    }
+
+    res.json(data);
+});
+
+app.post('/cancel', function(req, res) {
+    var userId = req.param('userId');
+    var requestId = req.param('requestId');
+
+    console.log("Cancel Sent API");
+    console.log("User ID:" + userId);
+    console.log("Request ID:" + requestId);
+    console.log("Count Users: %j", service.users.length);
+
+    var user = service.findUserWithShop(userId);
+    if (user != null) {
+        console.log("Found User: " + user.userId);
+
+        user.sendCancelNotification(requestId);
     }
 
     res.json(data);
@@ -68,10 +70,15 @@ User.prototype.addHandlers = function() {
         console.log(data)
     })
 }
+
+User.prototype.sendCancelNotification = function(requestId) {
+    var self = this;
+    this.socket.emit('cancel', requestId);
+    console.log("sent cancel event");
+}
+
 User.prototype.sendRequestSentNotification = function(requestId, request) {
     var self = this;
-    this.socket.emit('requestSent', requestId);
-    console.log("sent requestSend");
     this.socket.emit('requestSent2', request);
     console.log("sent requestSend2");
 }
